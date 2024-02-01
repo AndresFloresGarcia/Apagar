@@ -15,9 +15,12 @@ public class ApagarOrdenador {
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel);
 
-        // Crear una etiqueta con el mensaje
+        // Crear una etiqueta con el mensaje y el tiempo restante
         JLabel label = new JLabel("El ordenador se apagará en 10 minutos.");
         panel.add(label);
+
+        JLabel tiempoRestanteLabel = new JLabel();
+        panel.add(tiempoRestanteLabel);
 
         // Crear un temporizador de cuenta regresiva
         Timer timer = new Timer(1000, new ActionListener() {
@@ -30,13 +33,17 @@ public class ApagarOrdenador {
                     // Apagar el ordenador después de 10 minutos
                     apagarOrdenador();
                     ((Timer) e.getSource()).stop(); // Detener el temporizador
+                } else {
+                    // Actualizar la etiqueta con el tiempo restante
+                    tiempoRestanteLabel.setText("Tiempo restante: " + formatearTiempo(segundos));
                 }
             }
         });
         timer.start(); // Iniciar el temporizador
 
         // Configurar la ventana
-        frame.setSize(300, 100);
+        frame.setSize(300, 150);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -50,5 +57,11 @@ public class ApagarOrdenador {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String formatearTiempo(int segundos) {
+        int minutos = segundos / 60;
+        int segundosRestantes = segundos % 60;
+        return String.format("%02d:%02d", minutos, segundosRestantes);
     }
 }
